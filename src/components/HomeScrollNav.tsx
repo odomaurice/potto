@@ -3,13 +3,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
-// Sections in page order. `id: null` = the top of the page (hero, which has no id).
 // Each id must match an anchor rendered on the homepage.
 type Section = { id: string | null; label: string };
 
-// Must mirror the sections actually rendered in page.tsx, in page order — a dot
-// pointing at a missing id silently does nothing when clicked, and skews the
-// active-section maths because its offset resolves to Infinity.
 const SECTIONS: Section[] = [
   { id: null, label: "Top" },
   { id: "intro-video", label: "Potto in action" },
@@ -22,12 +18,6 @@ const SECTIONS: Section[] = [
 
 const LAST = SECTIONS.length - 1;
 
-/**
- * Homepage scroll aid: a section indicator down the left edge (click a dot to
- * jump; the active section is highlighted) and up/down arrows on the right that
- * step to the previous/next section. Both read one shared active index derived
- * from scroll position. Desktop only — hidden on smaller screens.
- */
 export default function HomeScrollNav() {
   const [active, setActive] = useState(0);
 
@@ -43,14 +33,13 @@ export default function HomeScrollNav() {
 
     const compute = () => {
       ticking = false;
-      // A probe line ~30% down the viewport decides the "current" section.
+     
       const probe = window.scrollY + window.innerHeight * 0.3;
       let idx = 0;
       for (let i = 0; i < SECTIONS.length; i += 1) {
         if (probe >= topOf(SECTIONS[i])) idx = i;
       }
-      // Snap to the last section when scrolled to the very bottom (short final
-      // sections might never cross the probe line otherwise).
+      
       if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
         idx = LAST;
       }
@@ -78,8 +67,7 @@ export default function HomeScrollNav() {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    // scroll-margin-top (set globally on [id] elements) keeps the fixed header
-    // from covering the section top.
+   
     document.getElementById(target.id)?.scrollIntoView({ behavior: "smooth" });
   }, []);
 

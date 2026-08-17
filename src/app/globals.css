@@ -71,6 +71,7 @@
   --color-brand: var(--brand);
   --color-brand-fg: var(--brand-fg);
   --color-highlight: var(--highlight);
+  --color-water-mark: var(--water-mark);
 
   /* shadcn vocabulary */
   --color-background: var(--background);
@@ -169,6 +170,11 @@
   --sidebar-accent-foreground: oklch(0.2686 0.0541 82.31);
   --sidebar-border: oklch(0.9 0.006 264.36);
   --sidebar-ring: oklch(0.6002 0.1038 184.7);
+  /* Watermark linework — deliberately at the threshold of visibility: present
+     as texture, never legible as content. Pure neutral, so chroma and hue are 0;
+     lightness is the only dial. Raise it toward 100% to fade further, lower it
+     to strengthen. (#E2E2E2 would be 91%.) */
+  --water-mark: oklch(97% 0 0); /* ≈ #F5F5F5 */
 }
 
 /* Outside @layer deliberately, so it outranks the utilities it is overriding.

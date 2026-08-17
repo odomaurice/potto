@@ -13,17 +13,8 @@ import {
   Wallet02Icon,
 } from "@hugeicons/core-free-icons";
 
-/** The Potto mark on its own — 256×256, teal on a real alpha channel. */
 const BRAND_MARK = "/Potto-logo-only_iebxw7.webp";
 
-/**
- * Potto Suite — the key product, then the auxiliary services.
- *
- * Built as live text rather than the exported card images from the old site:
- * those bake in the white panels the brief rules out, and an image of a card
- * cannot reflow on a phone. Everything here is frameless — the products are
- * separated by whitespace and a tinted icon disc, nothing is boxed.
- */
 
 const KEY_PRODUCT = {
   name: "Potto Secure",
@@ -118,8 +109,6 @@ const BLURB =
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function SuiteSection() {
-  // One observer per block, so each half animates when it is reached rather
-  // than the whole section firing off the first thing to appear.
   const keyRef = useRef<HTMLDivElement>(null);
   const auxRef = useRef<HTMLDivElement>(null);
   const keyInView = useInView(keyRef, { once: true, amount: 0.15 });
@@ -169,11 +158,9 @@ export default function SuiteSection() {
             {BLURB}
           </motion.p>
 
-          <div className="mt-16 grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div className="mt-16 grid gap-12 md:grid-cols-[0.85fr_1.15fr] md:gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
             {/* Identity */}
             <motion.div {...reveal(keyInView, 0.36)}>
-              {/* The brand mark itself rather than a generic shield glyph. It
-                  carries alpha, so the tinted disc shows through behind it. */}
               <span className="grid h-24 w-24 place-items-center rounded-full bg-brand/10">
                 <Image
                   src={BRAND_MARK}
@@ -183,7 +170,7 @@ export default function SuiteSection() {
                   className="h-12 w-12 object-contain"
                 />
               </span>
-              <h3 className="mt-8 font-header text-4xl font-extrabold tracking-tight text-brand sm:text-5xl">
+              <h3 className="mt-8 font-header text-4xl font-extrabold tracking-tight text-brand md:text-4xl lg:text-5xl">
                 {KEY_PRODUCT.name}
               </h3>
               <p className="mt-3 text-lg font-medium text-brand-yellow-dark">

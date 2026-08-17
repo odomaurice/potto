@@ -11,21 +11,7 @@ import {
   StarIcon,
 } from "@hugeicons/core-free-icons";
 
-/**
- * Testimonials — a single quote at a time, on the white page like every other
- * section. Frameless: no card around the quote, no border on the controls.
- *
- * NOTE: these are sample entries. The wording, people and schools are written
- * for layout purposes — swap them for real, permissioned quotes before launch.
- * School names are invented so nothing here attributes words to an actual
- * institution.
- */
-/**
- * Drop portrait files at these paths and they render automatically; leave
- * `avatar` off (or delete the file) and the entry falls back to an initials
- * disc, so a missing image never shows as a broken picture. Square crops,
- * ~200×200 or larger.
- */
+
 const TESTIMONIALS = [
   {
     quote:
@@ -64,7 +50,6 @@ const TESTIMONIALS = [
 const INTERVAL = 7000;
 const ease = [0.22, 1, 0.36, 1] as const;
 
-/** Initials for the avatar disc — no photo assets, and initials read cleanly. */
 const initialsOf = (name: string) =>
   name
     .split(" ")
@@ -75,13 +60,8 @@ const initialsOf = (name: string) =>
 export default function TestimonialsSection() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
-
-  // `direction` decides which way a slide enters and leaves, so arrows and dots
-  // both animate the way the viewer expects.
   const [[index, direction], setSlide] = useState<[number, number]>([0, 0]);
   const [paused, setPaused] = useState(false);
-  // Avatars that 404'd, keyed by src, so they fall back to initials once and
-  // don't retry on every slide change.
   const [avatarFailed, setAvatarFailed] = useState<Record<string, boolean>>({});
   const current = TESTIMONIALS[index];
 
@@ -89,8 +69,7 @@ export default function TestimonialsSection() {
     setSlide([(next + TESTIMONIALS.length) % TESTIMONIALS.length, dir]);
   }, []);
 
-  // Autoplay, held while the viewer is hovering or tabbing through, and off
-  // entirely under reduced motion — where the controls still work.
+ 
   useEffect(() => {
     if (paused) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -154,8 +133,7 @@ export default function TestimonialsSection() {
           aria-label="What our clients say"
           className="relative mx-auto mt-16 max-w-4xl"
         >
-          {/* Oversized quote glyph, sitting behind the text as an anchor rather
-              than a box around it. */}
+         
           <HugeiconsIcon
             icon={QuoteUpIcon}
             size={120}
@@ -163,8 +141,6 @@ export default function TestimonialsSection() {
             className="pointer-events-none absolute -top-6 left-1/2 -z-10 -translate-x-1/2 text-brand/10"
           />
 
-          {/* A floor on the height so the controls below hold still while quotes
-              of different lengths swap in and out. */}
           <div className="grid min-h-72 place-items-center text-center sm:min-h-64">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.figure
@@ -200,9 +176,7 @@ export default function TestimonialsSection() {
                 </div>
 
                 <figcaption className="mt-6 flex items-center justify-center gap-4">
-                  {/* Portrait when one exists, initials otherwise — `onError`
-                      catches a missing file at runtime so a 404 degrades to the
-                      disc rather than a broken image. */}
+                  
                   {current.avatar && !avatarFailed[current.avatar] ? (
                     <Image
                       src={current.avatar}

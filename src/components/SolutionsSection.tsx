@@ -12,19 +12,6 @@ import {
   UserCheck01Icon,
 } from "@hugeicons/core-free-icons";
 
-/**
- * Potto Solutions.
- *
- * The reference shows six teal cards. Six cards would be six frames, so the
- * teal is promoted to the section itself — one continuous surface the items sit
- * on, rather than a panel drawn around each one. The Potto mark from the
- * reference becomes a watermark tiled across the whole surface.
- *
- * The band meets the page on clean edges: no gradient hand-off, which only
- * produced a washed-out strip where the teal met the white.
- */
-
-const BRAND_MARK = "/Potto-logo-only_iebxw7.webp";
 
 const SOLUTIONS = [
   {
@@ -83,11 +70,7 @@ export default function SolutionsSection() {
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 bg-brand-teal-dark"
       >
-        {/* The mark from the reference, tiled across the whole surface instead
-            of one per card. `brightness-0 invert` repaints it white while
-            keeping its alpha — the asset is teal, and a teal mark on a teal
-            ground is invisible at any opacity. */}
-        <div className="absolute inset-0 bg-[url('/Potto-logo-only_iebxw7.webp')] bg-size-[340px_340px] bg-repeat opacity-[0.13] brightness-0 invert" />
+        <div className="absolute inset-0 bg-[url('/Potto-logo-only_iebxw7.webp')] bg-size-[340px_340px] bg-repeat opacity-[0.00] brightness-0 invert" />
       </div>
 
       <div ref={ref} className="mx-auto w-full max-w-7xl px-5 md:px-6 lg:px-8">
@@ -113,9 +96,6 @@ export default function SolutionsSection() {
             A technological ecosystem to efficiently keep your students secured.
           </motion.p>
         </div>
-
-        {/* Frameless: no panel per item, just the icon disc, the title and the
-            copy, held apart by the gutters. */}
         <div className="mt-20 grid gap-x-10 gap-y-16 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-14">
           {SOLUTIONS.map((solution, i) => (
             <motion.article
@@ -135,9 +115,6 @@ export default function SolutionsSection() {
               <h3 className="mt-7 font-header text-2xl font-extrabold leading-snug tracking-tight">
                 {solution.title}
               </h3>
-
-              {/* Loose leading, matching the reference — long copy with no card
-                  chrome needs air to stay readable. */}
               <p className="mt-4 text-[0.95rem] leading-9 text-white/70">
                 {solution.body}
               </p>

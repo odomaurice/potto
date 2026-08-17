@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowUp01Icon,
@@ -14,16 +15,7 @@ import {
   Mail01Icon,
 } from "@hugeicons/core-free-icons";
 
-/**
- * Site footer. Frameless like the rest of the page — column headings and a
- * single hairline above the legal row do the separating, no panels or boxes.
- *
- * Contact details are placeholders beyond the domain; swap them for the real
- * address and number.
- */
 
-// The wordmark is white artwork on transparent, so `brightness-0` repaints it
-// black for the light footer — the same trick the header uses when scrolled.
 const LOGO = "/potto_logo.svg";
 
 const PRODUCTS = [
@@ -44,8 +36,6 @@ const COMPANY = [
   { label: "Testimonials", href: "#testimonials" },
 ];
 
-// `tel:` values are stripped of spaces — dialers need the bare number, while the
-// spaced version stays as the visible label.
 const PHONES = ["+234 808 472 4276", "+234 812 557 8825"];
 const EMAILS = ["Info@potto.ng", "support@potto.ng"];
 
@@ -57,8 +47,7 @@ const OFFICE_HOURS = [
 const ADDRESS =
   "House 83 Coal City Gardens, Behind Central Bank of Nigeria, Okpara Avenue, Enugu.";
 
-// The Instagram URL came with an `igsh` share-tracking parameter attached; it
-// is dropped here since it only identifies the share that produced the link.
+
 const SOCIALS = [
   {
     label: "Potto on Facebook",
@@ -77,7 +66,14 @@ const SOCIALS = [
   },
 ];
 
+
+const BUILD_YEAR = new Date().getFullYear();
+
 export default function SiteFooter() {
+  
+  const [year, setYear] = useState(BUILD_YEAR);
+  useEffect(() => setYear(new Date().getFullYear()), []);
+
   return (
     <footer
       data-nav-tone="light"
@@ -85,10 +81,7 @@ export default function SiteFooter() {
       className="relative pt-20 pb-10 text-ink md:pt-24"
     >
       <div className="mx-auto w-full max-w-7xl px-5 md:px-6 lg:px-8">
-        {/* Five columns is too many below a wide desktop, so it steps
-            1 → 2 → 3 → 5. Brand and Contact get the extra width: one holds
-            prose, the other a full street address. */}
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 xl:grid-cols-[1.5fr_1fr_1fr_1.5fr_1fr]">
+        <div className="grid gap-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-10 xl:grid-cols-[1.5fr_1fr_1fr_1.5fr_1fr]">
           <div className="max-w-sm">
             <Link href="/" className="inline-flex items-center">
               <Image
@@ -105,8 +98,8 @@ export default function SiteFooter() {
               early detection to quick response, using leading-edge technologies.
             </p>
 
-            <p className="mt-6 text-sm text-soft">
-              © 2024 Potto. All rights reserved
+            <p className="mt-6 text-sm text-soft" suppressHydrationWarning>
+              © {year} Potto. All rights reserved
             </p>
             <a
               href="https://www.instagram.com/potto.ng"
@@ -120,8 +113,6 @@ export default function SiteFooter() {
             <ul className="mt-6 flex gap-2.5">
               {SOCIALS.map((social) => (
                 <li key={social.label}>
-                  {/* External: new tab, and `noopener` so the opened page can
-                      never reach back through window.opener. */}
                   <a
                     href={social.href}
                     target="_blank"
@@ -253,9 +244,8 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        {/* Legal row. Stacks on phones, spreads on desktop. */}
         <div className="mt-16 flex flex-col items-center gap-5 border-t border-line pt-8 sm:flex-row sm:justify-between">
-          {/* The copyright itself lives up in the brand column, as specified. */}
+         
           <p className="order-2 text-sm text-soft sm:order-1">
             Built for schools across Nigeria.
           </p>

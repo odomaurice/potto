@@ -8,12 +8,6 @@ import {
   ShieldUserIcon,
 } from "@hugeicons/core-free-icons";
 
-/**
- * Features. Deliberately frameless — no cards, borders, dividers or panels. The
- * three columns sit straight on the page backdrop so the contour field runs
- * behind them uninterrupted, and separation comes from whitespace and the
- * tinted icon discs alone.
- */
 const FEATURES = [
   {
     icon: ShieldUserIcon,
@@ -43,9 +37,7 @@ export default function FeaturesSection() {
       data-nav-bg="var(--canvas)"
       className="relative py-24 text-ink md:py-32"
     >
-      {/* Shared section container — max-w-7xl with these paddings is the same
-          measure every section uses, so their content edges line up down the
-          page. Change it in one section and it must change in all of them. */}
+    
       <div className="mx-auto w-full max-w-7xl px-5 md:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -94,13 +86,10 @@ export default function FeaturesSection() {
                 <HugeiconsIcon icon={feature.icon} size={34} strokeWidth={1.8} />
               </span>
 
-              <h3 className="mt-8 font-header text-2xl font-extrabold tracking-tight">
+              <h3 className="mt-8 font-header text-2xl font-extrabold tracking-tight sm:text-start">
                 {feature.title}
               </h3>
-
-              {/* Loose leading, matching the reference — the copy is long, and
-                  air is what keeps it readable without a card around it. */}
-              <p className="mt-5 text-[0.975rem] leading-9 text-soft">
+              <p className="mt-5 text-[0.975rem] leading-9 text-soft sm:text-start">
                 {feature.body}
               </p>
             </motion.article>

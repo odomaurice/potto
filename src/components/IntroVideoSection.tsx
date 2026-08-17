@@ -5,11 +5,67 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Cancel01Icon, PlayIcon } from "@hugeicons/core-free-icons";
+import {
+  AnalyticsUpIcon,
+  Cancel01Icon,
+  PlayIcon,
+  Shield01Icon,
+  SquareLock01Icon,
+} from "@hugeicons/core-free-icons";
 
 
 
-const DEVICES_IMAGE = "/devices.png";
+
+const DEVICES = [
+  {
+    src: "/devices/laptop.webp",
+    width: 1600,
+    height: 1105,
+    className: "w-[46%] sm:w-[43%] md:w-[41%] lg:w-[40%]",
+    sizes: "(min-width: 1024px) 40vw, (min-width: 640px) 43vw, 46vw",
+    delay: 0,
+    priority: true,
+  },
+  {
+    src: "/devices/phone.webp",
+    width: 440,
+    height: 942,
+    className: "w-[13%] sm:w-[11%] md:w-[9%] lg:w-[8%]",
+    sizes: "(min-width: 1024px) 8vw, (min-width: 640px) 11vw, 13vw",
+    // Last in, so the eye lands on the centre of the row.
+    delay: 0.24,
+    priority: false,
+  },
+  {
+    src: "/devices/tablet.webp",
+    width: 1200,
+    height: 853,
+    className: "w-[34%] sm:w-[32%] md:w-[31%] lg:w-[30%]",
+    sizes: "(min-width: 1024px) 30vw, (min-width: 640px) 32vw, 34vw",
+    delay: 0.12,
+    priority: false,
+  },
+] as const;
+
+
+const CLAIMS = [
+  {
+    icon: Shield01Icon,
+    title: "All-in-One Platform",
+    body: "Manage payments, fees, expenses and more in one place.",
+  },
+  {
+    icon: AnalyticsUpIcon,
+    title: "Real-time Insights",
+    body: "Get real-time data and visual reports to make informed decisions.",
+  },
+  {
+    icon: SquareLock01Icon,
+    title: "Secure & Reliable",
+    body: "Your data is protected with top level security and reliability.",
+  },
+];
+
 const VIDEO_SRC = "/videos/intro.MOV";
 
 const CHECKLIST = ["Gate Check-in", "Live Register", "Real-time Alert"];
@@ -33,8 +89,10 @@ export default function IntroVideoSection() {
   
   const copyRef = useRef<HTMLDivElement>(null);
   const inView = useInView(copyRef, { once: true, amount: 0.2 });
+  const artRef = useRef<HTMLDivElement>(null);
+  const artInView = useInView(artRef, { once: true, amount: 0.25 });
 
-  /** Fade-and-rise of those bullet points, positioned on the shared timeline. */
+
   const reveal = (delay: number) => ({
     initial: { opacity: 0, y: 18 },
     animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 },
@@ -75,37 +133,11 @@ export default function IntroVideoSection() {
       id="intro-video"
       data-nav-tone="light"
       data-nav-bg="var(--canvas)"
-      // Bottom padding reserves room for the artwork band, whose height is
-      // width-driven — so it is expressed in vw and tracks the band's own
-      // scaling at each breakpoint. Change one and the other must follow.
-      className="relative isolate overflow-hidden pt-24 pb-[62vw] text-ink sm:pb-[46vw] md:pt-32 lg:pb-[34vw]"
+      className="relative isolate overflow-hidden py-24 text-ink md:py-32"
     >
-      {/* The band is deliberately wider than the viewport on small screens.
-          The 3.2 crop ratio cannot be relaxed — a shorter ratio lets the
-          headline baked into the top of devices.png back into frame — so the
-          only way to enlarge the hardware on a phone is to zoom in and let the
-          sides clip. 190% ≈ double size at 375px; the section clips the excess. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 left-1/2 -z-10 aspect-[3.2] w-[190%] -translate-x-1/2 overflow-hidden sm:w-[140%] lg:w-full"
-      >
-        {/* `priority` because Next measured this as the Largest Contentful
-            Paint: it is a full-width image one scroll below the fold, so the
-            default lazy loading delays LCP. This marks it eager + high fetch
-            priority and preloads it. */}
-        <Image
-          src={DEVICES_IMAGE}
-          alt=""
-          fill
-          priority
-          sizes="(min-width: 1024px) 100vw, (min-width: 640px) 140vw, 190vw"
-          className="object-cover object-bottom"
-        />
-      </div>
-
-      {/* Shared section container — see the note in FeaturesSection. */}
       <div ref={copyRef} className="mx-auto w-full max-w-7xl px-5 md:px-6 lg:px-8">
-        <div className="grid items-start gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
+
+        <div className="grid items-start gap-12 md:grid-cols-[1.15fr_0.85fr] md:gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
           <div>
             <motion.span
               {...reveal(T.pill)}
@@ -116,7 +148,7 @@ export default function IntroVideoSection() {
 
             <motion.h2
               {...reveal(T.headline)}
-              className="mt-6 font-header text-4xl font-extrabold leading-[1.04] tracking-tight sm:mt-7 sm:text-6xl lg:text-7xl"
+              className="mt-6 font-header text-4xl font-extrabold leading-[1.04] tracking-tight sm:mt-7 sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl"
             >
               Ninety seconds
               <br />
@@ -124,10 +156,10 @@ export default function IntroVideoSection() {
             </motion.h2>
           </div>
 
-          <div className="lg:pt-4">
+          <div className="md:pt-2 lg:pt-4">
             <motion.p
               {...reveal(T.listHeading)}
-              className="font-header text-xl font-extrabold leading-snug tracking-tight sm:text-2xl lg:text-3xl"
+              className="font-header text-xl font-extrabold leading-snug tracking-tight sm:text-2xl md:text-xl lg:text-2xl xl:text-3xl"
             >
               Watch a school day run on Potto:
             </motion.p>
@@ -137,8 +169,6 @@ export default function IntroVideoSection() {
                 <motion.li
                   key={item}
                   initial={{ opacity: 0, x: -24 }}
-                  // Each point is pinned to a shared clock — 0.55s, 0.90s,
-                  // 1.25s — so they arrive strictly one after the other.
                   animate={
                     inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -24 }
                   }
@@ -147,7 +177,7 @@ export default function IntroVideoSection() {
                     delay: T.firstPoint + i * T.betweenPoints,
                     ease,
                   }}
-                  className="flex items-center gap-3 text-lg font-medium sm:gap-3.5 sm:text-xl lg:text-2xl"
+                  className="flex items-center gap-3 text-lg font-medium sm:gap-3.5 sm:text-xl md:text-base lg:text-lg xl:text-xl"
                 >
                   <motion.span
                     initial={{ scale: 0 }}
@@ -175,14 +205,10 @@ export default function IntroVideoSection() {
                 aria-label="Play the Potto introduction video"
                 className="group relative grid h-16 w-16 shrink-0 place-items-center rounded-full bg-brand-yellow text-ink shadow-[0_0_34px_-4px_var(--color-brand-yellow)] transition duration-300 hover:scale-105 hover:bg-brand-yellow-light hover:shadow-[0_0_52px_-2px_var(--color-brand-yellow-light)] sm:h-20 sm:w-20"
               >
-                {/* Halo breathes on its own — the glow is the resting state, and
-                    hover only intensifies it. */}
                 <span
                   aria-hidden
                   className="absolute inset-0 -z-10 animate-halo rounded-full bg-brand-yellow blur-md"
                 />
-                {/* Nudged right for optical centring: a triangle's visual mass
-                    sits left of its bounding box. */}
                 <HugeiconsIcon
                   icon={PlayIcon}
                   size={30}
@@ -201,12 +227,64 @@ export default function IntroVideoSection() {
           </div>
         </div>
       </div>
+      <div
+        ref={artRef}
+        aria-hidden
+        className="pointer-events-none mt-14 w-full px-5 md:mt-20 md:px-8 lg:px-32"
+      >
+        <div className="flex items-end justify-between gap-3 sm:gap-6">
+          {DEVICES.map((device) => (
+            <motion.div
+              key={device.src}
+              initial={{ opacity: 0, y: 34 }}
+              animate={
+                artInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 34 }
+              }
+              transition={{ duration: 0.75, delay: device.delay, ease }}
+              className={device.className}
+            >
+              <Image
+                src={device.src}
+                alt=""
+                width={device.width}
+                height={device.height}
+                priority={device.priority}
+                sizes={device.sizes}
+                className="h-auto w-full"
+              />
+            </motion.div>
+          ))}
+        </div>
+      </div>
 
-      {/* ---------- In-app video modal ----------
-          Portalled to <body>. This section sets `isolate`, which creates a
-          stacking context — a modal rendered inside it is trapped there, and the
-          fixed header (z-50, root context) would paint straight over the
-          overlay no matter how high its own z-index went. */}
+      <div className="mt-12 w-full px-5 md:mt-14 md:px-8 lg:px-32">
+        <div className="grid gap-10 sm:grid-cols-3 sm:gap-8 lg:gap-12">
+          {CLAIMS.map((claim, i) => (
+            <motion.div
+              key={claim.title}
+              initial={{ opacity: 0, y: 22 }}
+              animate={artInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 }}
+              // Picks up after the last device has landed.
+              transition={{ duration: 0.6, delay: 0.55 + i * 0.12, ease }}
+              className="flex items-start gap-4"
+            >
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand text-brand-fg lg:h-14 lg:w-14">
+                <HugeiconsIcon icon={claim.icon} size={26} strokeWidth={1.9} />
+              </span>
+
+              <div>
+                <h3 className="font-header text-lg font-extrabold tracking-tight lg:text-xl">
+                  {claim.title}
+                </h3>
+                <p className="mt-1.5 text-[0.925rem] leading-6 text-soft">
+                  {claim.body}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
       {mounted &&
         createPortal(
           <AnimatePresence>
@@ -222,9 +300,6 @@ export default function IntroVideoSection() {
                 aria-label="Potto introduction video"
                 className="fixed inset-0 z-100 flex flex-col items-center justify-center gap-5 bg-ink/85 px-4 py-6 backdrop-blur-xl md:px-8"
               >
-                {/* Close sits above the player as its own row rather than floating
-                on a negative offset — a negative top pushed it off-screen on
-                short viewports, where it was the only visible way out. */}
                 <button
                   ref={closeRef}
                   type="button"
@@ -250,12 +325,11 @@ export default function IntroVideoSection() {
                     damping: 26,
                     mass: 0.7,
                   }}
-                  // The backdrop closes on click; the player must not.
+                  
                   onClick={(e) => e.stopPropagation()}
                   className="relative w-full max-w-5xl"
                 >
-                  {/* Brand glow instead of a hard border, so the player reads as lit
-                  rather than framed — consistent with the rest of the page. */}
+                 
                   <div
                     aria-hidden
                     className="absolute -inset-6 -z-10 rounded-[3rem] bg-brand-teal/20 blur-3xl"
@@ -263,17 +337,13 @@ export default function IntroVideoSection() {
 
                   <video
                     ref={videoRef}
-                    // Bare `src`, no <source type>: see the note on VIDEO_SRC.
                     src={VIDEO_SRC}
                     autoPlay
                     controls
                     playsInline
-                    // `max-h` keeps the whole player on screen in landscape, where a
-                    // 16:9 box sized off the width would overflow vertically.
+                    
                     className="max-h-[78vh] w-full rounded-[1.75rem] bg-black shadow-2xl"
                   >
-                    {/* Add captions once a transcript exists:
-                    <track kind="captions" srcLang="en" src="/videos/intro.en.vtt" default /> */}
                   </video>
                 </motion.div>
               </motion.div>
