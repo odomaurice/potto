@@ -155,7 +155,7 @@ export default function ProblemSection() {
           <motion.div {...reveal(0.85)} className="relative">
             <Image
               src={PROBLEM_IMAGE}
-              alt="A parent worrying about their child's safety at school"
+              alt="A parent worrying about their child safety at school"
               loading="lazy"
               width={800}
               height={920}
