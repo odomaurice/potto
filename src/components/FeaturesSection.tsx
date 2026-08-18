@@ -81,7 +81,7 @@ export default function FeaturesSection() {
               className="text-center"
             >
               <span
-                className={`mx-auto grid h-20 w-20 place-items-center rounded-full ${feature.tint}`}
+                className={` grid mx-auto h-20 w-20 place-items-center rounded-full ${feature.tint}`}
               >
                 <HugeiconsIcon icon={feature.icon} size={34} strokeWidth={1.8} />
               </span>

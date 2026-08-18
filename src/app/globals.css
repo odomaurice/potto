@@ -43,6 +43,29 @@
     }
   }
 
+  /* Expanding ring for the play control. It starts flush with the button and
+     is hidden behind it, so what you see is a ring popping out of the edge and
+     dissolving — the "press me" pulse, without the hard snap of `animate-ping`
+     (which jumps straight to scale(2) and reads as a radar blip). Two of these
+     offset in time keep it continuous. Colour comes from the element's own
+     `--glow`, same convention as the button glow above. */
+  --animate-pulse-ring: pulse-ring 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+
+  @keyframes pulse-ring {
+    0% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    70% {
+      opacity: 0;
+      transform: scale(1.9);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.9);
+    }
+  }
+
   --color-brand-black: #000000;
   --color-brand-gray: #6b7280;
   --color-brand-teal: #0d9488;
@@ -186,6 +209,12 @@
   }
   .animate-halo {
     animation: none;
+  }
+  /* The ring only exists as movement, so with motion off it is nothing at all
+     rather than a stalled disc sitting under the button. */
+  .animate-pulse-ring {
+    animation: none;
+    opacity: 0;
   }
 }
 
